@@ -1,0 +1,5 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
+    android:name="com.computing.millenium.springers.livedeadcounter.LiveDeadCounterActivityFragment"
+    tools:layout="@layout/fragment_live_dead_counter" android:layout_width="match_parent"
+    android:layout_height="match_parent" />
