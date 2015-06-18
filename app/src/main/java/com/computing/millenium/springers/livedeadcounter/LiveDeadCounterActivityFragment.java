@@ -13,10 +13,6 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-
-/**
- * A placeholder fragment containing a simple view.
- */
 public class LiveDeadCounterActivityFragment extends Fragment {
 
     private int mDilution;
@@ -36,8 +32,9 @@ public class LiveDeadCounterActivityFragment extends Fragment {
         if (savedInstanceState == null){
             mQ1DeadCount = 0;
             mQ1LiveCount = 0;
-            mDilution = 10;
         }
+        //TODO: Save dilution in settings and maintain on rotation
+        mDilution = 10;
         View v = inflater.inflate(R.layout.fragment_live_dead_counter,container, false);
 
         final Vibrator vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -55,7 +52,8 @@ public class LiveDeadCounterActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(20);
-                mQ1LiveCount ++;
+                if (mQ1LiveCount == 999) mQ1LiveCount = 0;
+                else mQ1LiveCount ++;
                 liveCountTextView.setText(Integer.toString(mQ1LiveCount));
                 calculateAndUpdate(calculationTextView);
             }
@@ -66,7 +64,8 @@ public class LiveDeadCounterActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(20);
-                mQ1DeadCount++;
+                if (mQ1DeadCount == 999) mQ1DeadCount = 0;
+                else mQ1DeadCount++;
                 deadCountTextView.setText(Integer.toString(mQ1DeadCount));
                 calculateAndUpdate(calculationTextView);
             }
@@ -84,12 +83,12 @@ public class LiveDeadCounterActivityFragment extends Fragment {
     }
 
     private void calculate(){
-        if (mQ1DeadCount == 0 & mQ1DeadCount == 0){
+        if (mQ1DeadCount == 0 & mQ1LiveCount == 0){
             mViability = 0;
             mViableCellDensity = 0;
         } else{
         mViability = (float)mQ1LiveCount/(mQ1LiveCount + mQ1DeadCount)*100;
-        mViableCellDensity = mQ1LiveCount*10000/(mDilution/100f);
+        mViableCellDensity = (float)mQ1LiveCount*10000*(1+(mDilution/100f));
         }
     }
 }
