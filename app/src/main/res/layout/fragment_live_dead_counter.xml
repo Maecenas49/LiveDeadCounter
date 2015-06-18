@@ -19,11 +19,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="right">
-            <Button
+            <RadioButton
                 android:id="@+id/quadrant_one_button"
                 style="@style/QuadrantButton"
                 android:text="Q1"/>
-            <Button
+            <RadioButton
                 android:id="@+id/quadrant_two_button"
                 style="@style/QuadrantButton"
                 android:text="Q2"/>
@@ -33,11 +33,11 @@
             android:layout_width="fill_parent"
             android:orientation="horizontal"
             android:gravity="left">
-            <Button
+            <RadioButton
                 android:id="@+id/quadrant_three_button"
                 style="@style/QuadrantButton"
                 android:text="Q3"/>
-            <Button
+            <RadioButton
                 android:id="@+id/quadrant_four_button"
                 style="@style/QuadrantButton"
                 android:text="Q4"/>
