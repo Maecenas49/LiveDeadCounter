@@ -14,25 +14,21 @@
         android:layout_height="0dp"
         android:layout_weight="0"
         android:layout_marginBottom="5dp">
-        <LinearLayout
+        <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="right">
+            android:gravity="center"
+            android:layout_span="2">
             <RadioButton
                 android:id="@+id/quadrant_one_button"
                 style="@style/QuadrantButton"
-                android:text="Q1"/>
+                android:text="Q1"
+                android:checked="true"/>
             <RadioButton
                 android:id="@+id/quadrant_two_button"
                 style="@style/QuadrantButton"
                 android:text="Q2"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:orientation="horizontal"
-            android:gravity="left">
             <RadioButton
                 android:id="@+id/quadrant_three_button"
                 style="@style/QuadrantButton"
@@ -41,7 +37,7 @@
                 android:id="@+id/quadrant_four_button"
                 style="@style/QuadrantButton"
                 android:text="Q4"/>
-        </LinearLayout>
+        </RadioGroup>
     </TableRow>
     <TableRow
         android:layout_width="fill_parent"

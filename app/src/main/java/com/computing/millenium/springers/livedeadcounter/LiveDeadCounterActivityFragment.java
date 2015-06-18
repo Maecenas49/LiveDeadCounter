@@ -19,9 +19,12 @@ import java.util.zip.Inflater;
 
 public class LiveDeadCounterActivityFragment extends Fragment {
 
+    //TODO:Create array of live and dead counts
     private int mDilution;
     private int mQ1LiveCount;
     private int mQ1DeadCount;
+    private int mQ2LiveCount;
+    private int mActiveQuad;
 
     private float mViableCellDensity;
     private float mViability;
@@ -38,6 +41,7 @@ public class LiveDeadCounterActivityFragment extends Fragment {
         if (savedInstanceState == null){
             mQ1DeadCount = 0;
             mQ1LiveCount = 0;
+            mActiveQuad = 1;
         }
         //TODO: Save dilution in settings and maintain on rotation
         mDilution = 10;
@@ -88,8 +92,7 @@ public class LiveDeadCounterActivityFragment extends Fragment {
             }
         };
 
-        RadioGroup quadrantGroup = new RadioGroup(getActivity());
-        //TODO: Add all buttons to a radiogroup
+        //TODO: Add click listener and update active quadrant
         RadioButton Q1Button = (RadioButton)v.findViewById(R.id.quadrant_one_button);
         RadioButton Q2Button = (RadioButton)v.findViewById(R.id.quadrant_two_button);
         RadioButton Q3Button = (RadioButton)v.findViewById(R.id.quadrant_three_button);
@@ -114,5 +117,9 @@ public class LiveDeadCounterActivityFragment extends Fragment {
         mViability = (float)mQ1LiveCount/(mQ1LiveCount + mQ1DeadCount)*100;
         mViableCellDensity = (float)mQ1LiveCount*10000*(1+(mDilution/100f));
         }
+    }
+
+    private void setActiveQuad(int quad){
+        mActiveQuad = quad;
     }
 }
