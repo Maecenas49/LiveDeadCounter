@@ -3,5 +3,5 @@
     <item android:state_checked="false"
         android:drawable="@drawable/quadrant_button_normal"/>
     <item android:state_checked="true"
-        android:drawable="@drawable/quadrant_button_selected"/>
+        android:drawable="@drawable/quadrant_button_checked"/>
 </selector>

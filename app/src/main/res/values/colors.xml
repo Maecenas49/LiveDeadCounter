@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="liveButtonStart">#FAFAFA</color>
+    <color name="liveButtonEnd">#E0E0E0</color>
+    <color name="deadButtonStart">#5C6BC0</color>
+    <color name="deadButtonEnd">#3949AB</color>
+    <color name="quadButtonStart">#BDBDBD</color>
+    <color name="quadButtonEnd">#919191</color>
+    <color name="quadButtonCheckedStart">#747474</color>
+    <color name="quadButtonCheckedEnd">#555555</color>
+    <color name="background">#D7CCC8</color>
+    <color name="primary">#A1887F</color>
+    <color name="primaryDark">#6D4C41</color>
+    <color name="actionbar_text">#FAFAFA</color>
+</resources>
