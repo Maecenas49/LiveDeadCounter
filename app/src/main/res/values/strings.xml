@@ -2,4 +2,8 @@
     <string name="app_name">Live Dead Counter</string>
     <string name="action_settings">Settings</string>
     <string name="vcd_text">Viable Cell Density (VCD) = %1$s cells/mL \n Viability = %2$4.2f%%</string>
+    <string name="Q1Text">Q1</string>
+    <string name="Q2Text">Q2</string>
+    <string name="Q3Text">Q3</string>
+    <string name="Q4Text">Q4</string>
 </resources>

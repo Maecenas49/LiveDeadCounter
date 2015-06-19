@@ -22,20 +22,20 @@
             <RadioButton
                 android:id="@+id/quadrant_one_button"
                 style="@style/QuadrantButton"
-                android:text="Q1"
+                android:text="@string/Q1Text"
                 android:checked="true"/>
             <RadioButton
                 android:id="@+id/quadrant_two_button"
                 style="@style/QuadrantButton"
-                android:text="Q2"/>
+                android:text="@string/Q2Text"/>
             <RadioButton
                 android:id="@+id/quadrant_three_button"
                 style="@style/QuadrantButton"
-                android:text="Q3"/>
+                android:text="@string/Q3Text"/>
             <RadioButton
                 android:id="@+id/quadrant_four_button"
                 style="@style/QuadrantButton"
-                android:text="Q4"/>
+                android:text="@string/Q4Text"/>
         </RadioGroup>
     </TableRow>
     <TableRow
@@ -101,7 +101,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:gravity="center" />
 
 </TableLayout>
