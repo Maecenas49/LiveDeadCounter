@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -106,19 +107,27 @@ public class LiveDeadCounterActivityFragment extends Fragment {
                 vibrator.vibrate(20);
                 Button b = (Button)v;
                 b.setTextColor(getResources().getColor(R.color.quadButtonActiveText));
-                switch (v.getId()){
+                switch (b.getId()){
                     case R.id.quadrant_one_button:
                         QuadrantCount Q1Count = mTotalCount.getQ1Count();
                         Q1Count.setActivated(true);
+                        //Log.d(TAG, "Q1 Activated");
+                        break;
                     case R.id.quadrant_two_button:
                         QuadrantCount Q2Count = mTotalCount.getQ2Count();
                         Q2Count.setActivated(true);
+                        //Log.d(TAG, "Q2 Activated");
+                        break;
                     case R.id.quadrant_three_button:
                         QuadrantCount Q3Count = mTotalCount.getQ3Count();
                         Q3Count.setActivated(true);
+                        //Log.d(TAG, "Q3 Activated");
+                        break;
                     case R.id.quadrant_four_button:
                         QuadrantCount Q4Count = mTotalCount.getQ4Count();
                         Q4Count.setActivated(true);
+                        //Log.d(TAG, "Q4 Activated");
+                        break;
                 }
                 QuadrantCount activeCount = getActiveQuadrant();
                 mDeadCountTextView.setText(Integer.toString(activeCount.getDeadCount()));
@@ -152,8 +161,10 @@ public class LiveDeadCounterActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(20);
+                double[] viabilityCalc = mTotalCount.calculate();
                 FragmentManager fm = getActivity().getFragmentManager();
-                CalculationResultsFragment dialog = new CalculationResultsFragment();
+                CalculationResultsFragment dialog = CalculationResultsFragment
+                        .newInstance(viabilityCalc);
                 dialog.show(fm, DIALOG_RESULTS);
             }
         });

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -13,15 +14,21 @@ import java.text.NumberFormat;
  * Created by Mike on 6/19/2015.
  */
 public class CalculationResultsFragment extends DialogFragment {
-    public static final String EXTRA_COUNT =
-            "com.computing.millenium.springers.livedeadcounter.count";
+    public static final String EXTRA_VIABILITY =
+            "com.computing.millenium.springers.livedeadcounter.viability";
+    public static final String EXTRA_VCD =
+            "com.computing.millenium.springers.livedeadcounter.VCD";
 
     private TotalCount mTotalCount;
 
     //TODO:Pass through results instead of object
-    public static CalculationResultsFragment newInstance(TotalCount totalCount){
+    public static CalculationResultsFragment newInstance(double[] viabilityCounts){
         Bundle args = new Bundle();
-        return new CalculationResultsFragment();
+        args.putDouble(EXTRA_VIABILITY, viabilityCounts[0]);
+        args.putDouble(EXTRA_VCD, viabilityCounts[1]);
+        CalculationResultsFragment fragment = new CalculationResultsFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -29,10 +36,14 @@ public class CalculationResultsFragment extends DialogFragment {
 
         View v = getActivity().getLayoutInflater()
                 .inflate(R.layout.dialog_results, null);
+        //TODO: Check is these are null
+        double viability = getArguments().getDouble(EXTRA_VIABILITY);
+        double VCD = getArguments().getDouble(EXTRA_VCD);
 
         String calcText = getString(R.string.vcd_text);
         NumberFormat formatter = new DecimalFormat("0.##E0");
-        //calcView.setText(String.format(calcText, formatter.format(mViableCellDensity), mViability));
+        TextView textView = (TextView) v.findViewById(R.id.calculate_dialog_text_view);
+        textView.setText(String.format(calcText, formatter.format(VCD), viability));
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)

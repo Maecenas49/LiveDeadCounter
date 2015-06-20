@@ -1,5 +1,7 @@
 package com.computing.millenium.springers.livedeadcounter;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +10,7 @@ import java.util.UUID;
  * Created by Mike on 6/18/2015.
  */
 public class TotalCount {
+    private static final String TAG = "TotalCountClass";
     private UUID mId;
     private String mTitle;
 
@@ -16,8 +19,8 @@ public class TotalCount {
     private QuadrantCount mQ3Count;
     private QuadrantCount mQ4Count;
 
-    private float mViability;
-    private float mViableCellDensity;
+    private double mViability;
+    private double mViableCellDensity;
 
     public TotalCount(){
         //Generate unique identifier
@@ -77,45 +80,59 @@ public class TotalCount {
 
     public List<QuadrantCount> getActiveQuadrants(){
         List <QuadrantCount> activeQauds = new ArrayList<QuadrantCount>();
-        if (mQ1Count.isActivated()) activeQauds.add(mQ1Count);
-        if (mQ2Count.isActivated()) activeQauds.add(mQ2Count);
-        if (mQ3Count.isActivated()) activeQauds.add(mQ3Count);
-        if (mQ4Count.isActivated()) activeQauds.add(mQ4Count);
+        if (mQ1Count.isActivated()) {
+            activeQauds.add(mQ1Count);
+            //Log.d(TAG, "Total Count Q1 is active");
+        }
+        if (mQ2Count.isActivated()) {
+            activeQauds.add(mQ2Count);
+            //Log.d(TAG, "Total Count Q2 is active");
+        }
+        if (mQ3Count.isActivated()) {
+            activeQauds.add(mQ3Count);
+            //Log.d(TAG, "Total Count Q3 is active");
+        }
+        if (mQ4Count.isActivated()) {
+            activeQauds.add(mQ4Count);
+            //Log.d(TAG, "Total Count Q4 is active");
+        }
 
         return activeQauds;
     }
 
-    public float[] calculate() {
+    public double[] calculate() {
         List<QuadrantCount> activeQuads = getActiveQuadrants();
         int numActiveQuads = activeQuads.size();
         int totalLiveCounts = 0;
         int totalDeadCounts = 0;
+        //TODO: Check for all zero values before calculation
         for (QuadrantCount q:activeQuads){
             totalLiveCounts += q.getLiveCount();
             totalDeadCounts += q.getDeadCount();
         }
         //TODO: Use dilution in settings
-        float Viability = (float) totalLiveCounts/ (totalLiveCounts + totalDeadCounts) * 100;
-        float ViableCellDensity = (float) totalLiveCounts/numActiveQuads
-                * 10000 * (1 + (10/ 100f));
+        double Viability = (double) totalLiveCounts/ (totalLiveCounts + totalDeadCounts) * 100;
+        double ViableCellDensity = (double) totalLiveCounts/numActiveQuads
+                * 10000;
+                //* (1 + (10/100f));
         setViability(Viability);
         setViableCellDensity(ViableCellDensity);
-        return new float[] {Viability, ViableCellDensity};
+        return new double[] {Viability, ViableCellDensity};
     }
 
-    public float getViability() {
+    public double getViability() {
         return mViability;
     }
 
-    public void setViability(float viability) {
+    public void setViability(double viability) {
         mViability = viability;
     }
 
-    public float getViableCellDensity() {
+    public double getViableCellDensity() {
         return mViableCellDensity;
     }
 
-    public void setViableCellDensity(float viableCellDensity) {
+    public void setViableCellDensity(double viableCellDensity) {
         mViableCellDensity = viableCellDensity;
     }
 }
