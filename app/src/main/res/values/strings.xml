@@ -6,4 +6,9 @@
     <string name="Q2Text">Q2</string>
     <string name="Q3Text">Q3</string>
     <string name="Q4Text">Q4</string>
+    <string name="clear_all">Clear All</string>
+    <string name="reset_text">Reset</string>
+    <string name="calculate_text">Calculate</string>
+    <string name="results_title">Results</string>
+    <string name="save">Save</string>
 </resources>

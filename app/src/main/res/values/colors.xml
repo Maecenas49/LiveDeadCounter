@@ -13,4 +13,5 @@
     <color name="primary">#A1887F</color>
     <color name="primaryDark">#6D4C41</color>
     <color name="actionbar_text">#FAFAFA</color>
+    <color name="quadButtonInactiveText">#000000</color>
 </resources>

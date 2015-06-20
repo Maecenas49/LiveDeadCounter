@@ -1,11 +1,15 @@
 package com.computing.millenium.springers.livedeadcounter;
 
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,7 +21,7 @@ import java.text.NumberFormat;
 
 public class LiveDeadCounterActivityFragment extends Fragment {
 
-    //TODO:Implement total counts class
+    //Implement total counts class
     private int mDilution;
     private int mQ1LiveCount;
     private int mQ1DeadCount;
@@ -27,10 +31,19 @@ public class LiveDeadCounterActivityFragment extends Fragment {
     private RadioButton mQ3Button;
     private RadioButton mQ4Button;
 
+    private Button mLiveCounter;
+    private Button mDeadCounter;
+    private Button mResetButton;
+    private Button mCalculateButton;
+
+    private TextView mDeadCountTextView;
+    private TextView mLiveCountTextView;
+
     private TotalCount mTotalCount;
     private float mViableCellDensity;
     private float mViability;
 
+    private static final String DIALOG_RESULTS = "results";
     private final String TAG = "LiveDeadCounterFragment";
 
     public LiveDeadCounterActivityFragment() {
@@ -52,43 +65,36 @@ public class LiveDeadCounterActivityFragment extends Fragment {
         final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
         //Get Textviews associated with counts and set to initial count
-        final TextView liveCountTextView = (TextView) v.findViewById(R.id.liveTextView);
-        final TextView deadCountTextView = (TextView) v.findViewById(R.id.deadTextView);
-        liveCountTextView.setText(Integer.toString(mQ1LiveCount));
-        deadCountTextView.setText(Integer.toString(mQ1DeadCount));
-
-        //Set calculations results text view and update to current counts
-        final TextView calculationTextView = (TextView) v.findViewById(R.id.calculation_text_view);
-        calculateAndUpdate(calculationTextView);
+        mLiveCountTextView = (TextView) v.findViewById(R.id.liveTextView);
+        mDeadCountTextView = (TextView) v.findViewById(R.id.deadTextView);
+        mLiveCountTextView.setText(Integer.toString(mQ1LiveCount));
+        mDeadCountTextView.setText(Integer.toString(mQ1DeadCount));
 
         //Set live counter button with haptic feedback and calculation update on each click
-        Button liveCounter = (Button) v.findViewById(R.id.liveButton);
-        liveCounter.setOnClickListener(new View.OnClickListener() {
+        mLiveCounter = (Button) v.findViewById(R.id.liveButton);
+        mLiveCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(20);
                 QuadrantCount activeCount = getActiveQuadrant();
-                if (activeCount != null){
+                if (activeCount != null) {
                     activeCount.incrementLiveCount();
                 }
-
-                liveCountTextView.setText(Integer.toString(activeCount.getLiveCount()));
-                calculateAndUpdate(calculationTextView);
+                updateLiveDeadText();
             }
         });
 
         //Set dead counter button with haptic feedback and calculation update on each click
-        Button deadCounter = (Button) v.findViewById(R.id.deadButton);
-        deadCounter.setOnClickListener(new View.OnClickListener() {
+        mDeadCounter = (Button) v.findViewById(R.id.deadButton);
+        mDeadCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vibrator.vibrate(20);
                 QuadrantCount activeCount = getActiveQuadrant();
-                if (activeCount != null){
+                if (activeCount != null) {
                     activeCount.incrementDeadCount();
                 }
-                deadCountTextView.setText(Integer.toString(activeCount.getDeadCount()));
-                calculateAndUpdate(calculationTextView);
+                updateLiveDeadText();
             }
         });
 
@@ -115,8 +121,8 @@ public class LiveDeadCounterActivityFragment extends Fragment {
                         Q4Count.setActivated(true);
                 }
                 QuadrantCount activeCount = getActiveQuadrant();
-                deadCountTextView.setText(Integer.toString(activeCount.getDeadCount()));
-                liveCountTextView.setText(Integer.toString(activeCount.getLiveCount()));
+                mDeadCountTextView.setText(Integer.toString(activeCount.getDeadCount()));
+                mLiveCountTextView.setText(Integer.toString(activeCount.getLiveCount()));
             }
         };
 
@@ -131,28 +137,40 @@ public class LiveDeadCounterActivityFragment extends Fragment {
         mQ4Button = (RadioButton) v.findViewById(R.id.quadrant_four_button);
         mQ4Button.setOnClickListener(quadClickListener);
 
+        mResetButton = (Button)v.findViewById(R.id.resetButton);
+        mResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(20);
+                getActiveQuadrant().reset();
+                updateLiveDeadText();
+            }
+        });
+
+        mCalculateButton = (Button)v.findViewById(R.id.calculateButton);
+        mCalculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(20);
+                FragmentManager fm = getActivity().getFragmentManager();
+                CalculationResultsFragment dialog = new CalculationResultsFragment();
+                dialog.show(fm, DIALOG_RESULTS);
+            }
+        });
+
         return v;
     }
 
 
     private void calculateAndUpdate(TextView calcView) {
-        calculate();
+        //calculate();
         String calcText = getString(R.string.vcd_text);
         NumberFormat formatter = new DecimalFormat("0.##E0");
 
         calcView.setText(String.format(calcText, formatter.format(mViableCellDensity), mViability));
     }
 
-    private void calculate() {
-        if (mQ1DeadCount == 0 & mQ1LiveCount == 0) {
-            mViability = 0;
-            mViableCellDensity = 0;
-        } else {
-            mViability = (float) mQ1LiveCount / (mQ1LiveCount + mQ1DeadCount) * 100;
-            mViableCellDensity = (float) mQ1LiveCount * 10000 * (1 + (mDilution / 100f));
-        }
-    }
-
+    //Return which quadrant is currently active
     private QuadrantCount getActiveQuadrant(){
         if (mQ1Button.isChecked()) return mTotalCount.getQ1Count();
         if (mQ2Button.isChecked()) return mTotalCount.getQ2Count();
@@ -165,5 +183,35 @@ public class LiveDeadCounterActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_live_dead_counter, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.clear_all_settings:
+                //Clear all quadrants and reset to quadrant 1
+                mQ1Button.setChecked(true);
+                mQ2Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+                mQ3Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+                mQ4Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+                mTotalCount.resetCounts();
+                updateLiveDeadText();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateLiveDeadText(){
+        QuadrantCount activeCount = getActiveQuadrant();
+        mDeadCountTextView.setText(Integer.toString(activeCount.getDeadCount()));
+        mLiveCountTextView.setText(Integer.toString(activeCount.getLiveCount()));
     }
 }

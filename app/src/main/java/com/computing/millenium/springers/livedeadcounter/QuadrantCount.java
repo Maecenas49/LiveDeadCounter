@@ -44,4 +44,9 @@ public class QuadrantCount {
     public void incrementDeadCount(){
         mDeadCount++;
     }
+
+    public void reset(){
+        setDeadCount(0);
+        setLiveCount(0);
+    }
 }
