@@ -3,6 +3,7 @@ package com.computing.millenium.springers.livedeadcounter;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,8 @@ public class TotalCount {
     private static final String TAG = "TotalCountClass";
     private UUID mId;
     private String mTitle;
+    private String mComment;
+    private Date mDate;
 
     private QuadrantCount mQ1Count;
     private QuadrantCount mQ2Count;
@@ -30,6 +33,7 @@ public class TotalCount {
         mQ2Count = new QuadrantCount();
         mQ3Count = new QuadrantCount();
         mQ4Count = new QuadrantCount();
+
     }
 
     public UUID getId() {
@@ -134,5 +138,26 @@ public class TotalCount {
 
     public void setViableCellDensity(double viableCellDensity) {
         mViableCellDensity = viableCellDensity;
+    }
+
+    @Override
+    public String toString() {
+        return mTitle;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
+    public String getComment() {
+        return mComment;
+    }
+
+    public void setComment(String comment) {
+        mComment = comment;
     }
 }

@@ -1,8 +1,11 @@
 package com.computing.millenium.springers.livedeadcounter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -21,7 +24,7 @@ public class CalculationResultsFragment extends DialogFragment {
 
     private TotalCount mTotalCount;
 
-    //TODO:Pass through results instead of object
+    //Pass through results instead of object
     public static CalculationResultsFragment newInstance(double[] viabilityCounts){
         Bundle args = new Bundle();
         args.putDouble(EXTRA_VIABILITY, viabilityCounts[0]);
@@ -36,7 +39,7 @@ public class CalculationResultsFragment extends DialogFragment {
 
         View v = getActivity().getLayoutInflater()
                 .inflate(R.layout.dialog_results, null);
-        //TODO: Check is these are null
+
         double viability = getArguments().getDouble(EXTRA_VIABILITY);
         double VCD = getArguments().getDouble(EXTRA_VCD);
 
@@ -48,8 +51,20 @@ public class CalculationResultsFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.results_title)
-                .setPositiveButton(R.string.save, null)
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendResult(Activity.RESULT_OK);
+                    }
+                })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+    }
+
+    private void sendResult(int resultCode){
+        if (getTargetFragment() == null) return;
+
+        Intent i = new Intent();
+         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
     }
 }

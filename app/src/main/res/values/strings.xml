@@ -11,4 +11,10 @@
     <string name="calculate_text">Calculate</string>
     <string name="results_title">Results</string>
     <string name="save">Save</string>
+    <string name="total_count_detail_title">Title</string>
+    <string name="total_count_title_hint">Enter a title for this count</string>
+    <string name="total_count_details">Details</string>
+    <string name="quadrant_count_text">Live: %1$d \nDead: %2$d</string>
+    <string name="total_count_counts">Counts</string>
+    <string name="total_count_comment_hint">Add comments here</string>
 </resources>

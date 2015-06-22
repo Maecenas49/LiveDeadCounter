@@ -1,10 +1,11 @@
 package com.computing.millenium.springers.livedeadcounter;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +20,13 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.UUID;
 
-public class LiveDeadCounterActivityFragment extends Fragment {
+public class LiveDeadCounterFragment extends Fragment {
 
+    private static final int REQUEST_CALC = 1;
+    private static final String EXTRA_ID =
+            "com.computing.millenium.springers.livedeadcounter.count_id";
     //Implement total counts class
     private int mDilution;
     private int mQ1LiveCount;
@@ -47,7 +52,7 @@ public class LiveDeadCounterActivityFragment extends Fragment {
     private static final String DIALOG_RESULTS = "results";
     private final String TAG = "LiveDeadCounterFragment";
 
-    public LiveDeadCounterActivityFragment() {
+    public LiveDeadCounterFragment() {
     }
 
     @Override
@@ -165,6 +170,7 @@ public class LiveDeadCounterActivityFragment extends Fragment {
                 FragmentManager fm = getActivity().getFragmentManager();
                 CalculationResultsFragment dialog = CalculationResultsFragment
                         .newInstance(viabilityCalc);
+                dialog.setTargetFragment(LiveDeadCounterFragment.this, REQUEST_CALC);
                 dialog.show(fm, DIALOG_RESULTS);
             }
         });
@@ -217,6 +223,17 @@ public class LiveDeadCounterActivityFragment extends Fragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
+        if (requestCode == REQUEST_CALC){
+            UUID id = mTotalCount.getId();
+            Intent intent = new Intent(getActivity(), TotalCountDetailsActivity.class);
+            intent.putExtra(EXTRA_ID, id);
+            startActivity(intent);
         }
     }
 

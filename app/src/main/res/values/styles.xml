@@ -42,4 +42,11 @@
         <item name="android:textColor">@color/actionbar_text</item>
     </style>
 
+    <style name="QuadrantCountDetailsText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:text">@string/quadrant_count_text</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
 </resources>
