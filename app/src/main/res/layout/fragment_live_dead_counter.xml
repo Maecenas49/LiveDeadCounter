@@ -81,6 +81,7 @@
             android:textSize="20sp"
             android:text="LIVE"
             android:id="@+id/liveButton"
+            android:hapticFeedbackEnabled="true"
             android:background="@drawable/live_button"
             android:layout_marginRight="5dp"
             android:layout_gravity="bottom"/>
@@ -91,6 +92,7 @@
             android:textSize="20sp"
             android:text="DEAD"
             android:id="@+id/deadButton"
+            android:hapticFeedbackEnabled="true"
             android:background="@drawable/dead_button"
             android:layout_marginLeft="5dp"
             android:layout_gravity="bottom" />

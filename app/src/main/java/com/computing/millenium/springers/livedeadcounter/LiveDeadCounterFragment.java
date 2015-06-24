@@ -8,6 +8,7 @@ import android.os.Vibrator;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +26,6 @@ import java.util.UUID;
 public class LiveDeadCounterFragment extends Fragment {
 
     private static final int REQUEST_CALC = 1;
-    private static final String EXTRA_ID =
-            "com.computing.millenium.springers.livedeadcounter.count_id";
     //Implement total counts class
     private int mDilution;
     private int mQ1LiveCount;
@@ -81,7 +80,7 @@ public class LiveDeadCounterFragment extends Fragment {
         mLiveCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(20);
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 QuadrantCount activeCount = getActiveQuadrant();
                 if (activeCount != null) {
                     activeCount.incrementLiveCount();
@@ -95,7 +94,7 @@ public class LiveDeadCounterFragment extends Fragment {
         mDeadCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(20);
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 QuadrantCount activeCount = getActiveQuadrant();
                 if (activeCount != null) {
                     activeCount.incrementDeadCount();
@@ -109,7 +108,7 @@ public class LiveDeadCounterFragment extends Fragment {
         View.OnClickListener quadClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(20);
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 Button b = (Button)v;
                 b.setTextColor(getResources().getColor(R.color.quadButtonActiveText));
                 switch (b.getId()){
@@ -155,7 +154,7 @@ public class LiveDeadCounterFragment extends Fragment {
         mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(20);
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 getActiveQuadrant().reset();
                 updateLiveDeadText();
             }
@@ -165,7 +164,7 @@ public class LiveDeadCounterFragment extends Fragment {
         mCalculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrator.vibrate(20);
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 double[] viabilityCalc = mTotalCount.calculate();
                 FragmentManager fm = getActivity().getFragmentManager();
                 CalculationResultsFragment dialog = CalculationResultsFragment
@@ -178,14 +177,14 @@ public class LiveDeadCounterFragment extends Fragment {
         return v;
     }
 
-
+    /**
     private void calculateAndUpdate(TextView calcView) {
         //calculate();
         String calcText = getString(R.string.vcd_text);
         NumberFormat formatter = new DecimalFormat("0.##E0");
 
         calcView.setText(String.format(calcText, formatter.format(mViableCellDensity), mViability));
-    }
+    }**/
 
     //Return which quadrant is currently active
     private QuadrantCount getActiveQuadrant(){
@@ -231,8 +230,9 @@ public class LiveDeadCounterFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) return;
         if (requestCode == REQUEST_CALC){
             UUID id = mTotalCount.getId();
+            TotalCountSingleton.get(getActivity()).addCount(mTotalCount);
             Intent intent = new Intent(getActivity(), TotalCountDetailsActivity.class);
-            intent.putExtra(EXTRA_ID, id);
+            intent.putExtra(TotalCountDetailsFragment.EXTRA_ID, id);
             startActivity(intent);
         }
     }

@@ -21,6 +21,7 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
     </style>
 
     <style name="MyActionBar"
@@ -48,5 +49,6 @@
         <item name="android:text">@string/quadrant_count_text</item>
         <item name="android:layout_weight">0</item>
         <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:hapticFeedbackEnabled">true</item>
     </style>
 </resources>
