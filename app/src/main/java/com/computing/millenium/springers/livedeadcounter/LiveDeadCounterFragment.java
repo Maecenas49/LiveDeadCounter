@@ -220,6 +220,9 @@ public class LiveDeadCounterFragment extends Fragment {
                 mTotalCount.resetCounts();
                 updateLiveDeadText();
                 return true;
+            case R.id.counts_list_settings:
+                Intent intent = new Intent(getActivity(), CountsListActivity.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -28,6 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter> -->
         </activity>
+        <activity android:name=".CountsListActivity"
+                  android:label="@string/counts"
+                  android:parentActivityName=".LiveDeadCounterActivity">
+            
+        </activity>
     </application>
 
 </manifest>

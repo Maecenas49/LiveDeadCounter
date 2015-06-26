@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -33,6 +35,23 @@ public class TotalCountDetailsFragment extends Fragment {
         NumberFormat formatter = new DecimalFormat("0.##E0");
         countDetailsText.setText(String.format(calcText, formatter.format(VCD), viability));
 
+        String quadText = getString(R.string.quadrant_count_text);
+        TextView q1DetailsText = (TextView)v.findViewById(R.id.total_count_q1_text);
+        q1DetailsText.setText(String.format(quadText, mTotalCount.getQ1Count().getLiveCount(),
+                mTotalCount.getQ1Count().getDeadCount()));
+
+        TextView q2DetailsText = (TextView)v.findViewById(R.id.total_count_q2_text);
+        q2DetailsText.setText(String.format(quadText, mTotalCount.getQ2Count().getLiveCount(),
+                mTotalCount.getQ2Count().getDeadCount()));
+
+        TextView q3DetailsText = (TextView)v.findViewById(R.id.total_count_q3_text);
+        q3DetailsText.setText(String.format(quadText, mTotalCount.getQ3Count().getLiveCount(),
+                mTotalCount.getQ3Count().getDeadCount()));
+
+        TextView q4DetailsText = (TextView)v.findViewById(R.id.total_count_q4_text);
+        q4DetailsText.setText(String.format(quadText, mTotalCount.getQ4Count().getLiveCount(),
+                mTotalCount.getQ4Count().getDeadCount()));
+
         return v;
     }
 
@@ -41,6 +60,14 @@ public class TotalCountDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID countId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_ID);
         mTotalCount = TotalCountSingleton.get(getActivity()).getTotalCount(countId);
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_total_count_details, menu);
     }
 }

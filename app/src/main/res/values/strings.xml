@@ -17,4 +17,8 @@
     <string name="quadrant_count_text">Live: %1$d \nDead: %2$d</string>
     <string name="total_count_counts">Counts</string>
     <string name="total_count_comment_hint">Add comments here</string>
+    <string name="done">Done</string>
+    <string name="delete">Delete</string>
+    <string name="counts">Counts</string>
+    <string name="view_counts">View Counts</string>
 </resources>
