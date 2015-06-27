@@ -17,6 +17,11 @@ public class TotalCountSingleton {
     private TotalCountSingleton(Context appContext){
         mAppContext = appContext;
         mTotalCounts = new ArrayList<TotalCount>();
+//        for (int i = 0; i< 100; i++){
+//            TotalCount c  = new TotalCount();
+//            c.setTitle("Count # " + i);
+//            mTotalCounts.add(c);
+//        }
     }
 
     public static TotalCountSingleton get(Context c){

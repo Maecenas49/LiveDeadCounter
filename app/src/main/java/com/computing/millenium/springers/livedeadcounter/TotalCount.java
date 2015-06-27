@@ -28,6 +28,7 @@ public class TotalCount {
     public TotalCount(){
         //Generate unique identifier
         setId(UUID.randomUUID());
+        mDate = new Date();
         mQ1Count = new QuadrantCount();
         mQ1Count.setActivated(true);
         mQ2Count = new QuadrantCount();
