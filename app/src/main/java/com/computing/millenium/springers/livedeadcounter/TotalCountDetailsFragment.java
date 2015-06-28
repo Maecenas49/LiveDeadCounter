@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,7 @@ import java.util.UUID;
 public class TotalCountDetailsFragment extends Fragment {
     public static final String EXTRA_ID =
             "com.computing.millenium.springers.livedeadcounter.count_id";
+    private static final String TAG = "CountDetailsFragment";
 
     private TotalCount mTotalCount;
 
@@ -83,6 +85,7 @@ public class TotalCountDetailsFragment extends Fragment {
 
         Button dateButton = (Button)v.findViewById(R.id.total_count_date);
         Date date = mTotalCount.getDate();
+        Log.d(TAG, "Retrieve date: " + date.toString());
         dateButton.setText(
                 DateFormat.getMediumDateFormat(getActivity()).format(date) + "; "
         + DateFormat.getTimeFormat(getActivity()).format(date));
