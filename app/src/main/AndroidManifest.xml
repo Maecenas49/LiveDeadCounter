@@ -21,7 +21,7 @@
         <activity
             android:name=".TotalCountDetailsActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".LiveDeadCounterActivity">
+            android:parentActivityName=".CountsListActivity">
             <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

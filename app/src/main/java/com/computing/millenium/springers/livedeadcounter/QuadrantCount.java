@@ -12,6 +12,12 @@ public class QuadrantCount {
         setActivated(false);
     }
 
+    public QuadrantCount(int liveCount, int deadCount, boolean activated){
+        setLiveCount(liveCount);
+        setDeadCount(deadCount);
+        setActivated(activated);
+    }
+
     public boolean isActivated() {
         return mActivated;
     }

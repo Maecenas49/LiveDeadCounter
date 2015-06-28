@@ -1,9 +1,12 @@
 package com.computing.millenium.springers.livedeadcounter;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,15 @@ public class CountsListFragment extends ListFragment {
 
         setListAdapter(adapter);
 
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        TotalCount totalCount = mTotalCounts.get(position);
+        Intent intent = new Intent(getActivity(), TotalCountDetailsActivity.class);
+        intent.putExtra(TotalCountDetailsFragment.EXTRA_ID, totalCount.getId());
+        startActivity(intent);
     }
 
     @Override

@@ -112,4 +112,10 @@ public class TotalCountDetailsFragment extends Fragment {
             default: return false;
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        TotalCountSingleton.get(getActivity()).saveCounts();
+    }
 }

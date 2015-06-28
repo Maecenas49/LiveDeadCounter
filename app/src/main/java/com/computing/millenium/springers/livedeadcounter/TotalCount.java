@@ -2,6 +2,10 @@ package com.computing.millenium.springers.livedeadcounter;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +20,22 @@ public class TotalCount {
     private String mTitle;
     private String mComment;
     private Date mDate;
+
+    //TODO:Incorporate active quadrants
+    private static final String JSON_ID = "id";
+    private static final String JSON_TITLE = "Title";
+    private static final String JSON_DATE ="Date";
+    private static final String JSON_COMMENT = "Comment";
+    private static final String JSON_VCD = "VCD";
+    private static final String JSON_VIABILITY = "Viability";
+    private static final String JSON_Q1LIVE = "Q1Live";
+    private static final String JSON_Q1DEAD = "Q1Dead";
+    private static final String JSON_Q2LIVE = "Q2Live";
+    private static final String JSON_Q2DEAD = "Q2Dead";
+    private static final String JSON_Q3LIVE = "Q3Live";
+    private static final String JSON_Q3DEAD = "Q3Dead";
+    private static final String JSON_Q4LIVE = "Q4Live";
+    private static final String JSON_Q4DEAD = "Q4Dead";
 
     private QuadrantCount mQ1Count;
     private QuadrantCount mQ2Count;
@@ -34,6 +54,27 @@ public class TotalCount {
         mQ2Count = new QuadrantCount();
         mQ3Count = new QuadrantCount();
         mQ4Count = new QuadrantCount();
+
+    }
+
+    public TotalCount(JSONObject json)throws JSONException{
+        mId = UUID.fromString(json.getString(JSON_ID));
+        if (json.has(JSON_TITLE))
+            mTitle = json.getString(JSON_TITLE);
+        if (json.has(JSON_COMMENT))
+            mComment = json.getString(JSON_COMMENT);
+        try{
+            mDate = DateFormat.getDateInstance().parse(json.getString(JSON_DATE));}
+        catch (Exception e){
+            Log.e(TAG, "Failed to load date: ", e);
+        }
+        //TODO: Extract activated quadrants
+        mQ1Count = new QuadrantCount(json.getInt(JSON_Q1LIVE), json.getInt(JSON_Q1DEAD), true);
+        mQ2Count = new QuadrantCount(json.getInt(JSON_Q2LIVE), json.getInt(JSON_Q2DEAD), true);
+        mQ3Count = new QuadrantCount(json.getInt(JSON_Q3LIVE), json.getInt(JSON_Q3DEAD), true);
+        mQ4Count = new QuadrantCount(json.getInt(JSON_Q4LIVE), json.getInt(JSON_Q4DEAD), true);
+        mViability = json.getDouble(JSON_VIABILITY);
+        mViableCellDensity = json.getDouble(JSON_VCD);
 
     }
 
@@ -160,5 +201,25 @@ public class TotalCount {
 
     public void setComment(String comment) {
         mComment = comment;
+    }
+
+    public JSONObject toJSON() throws JSONException{
+        JSONObject json = new JSONObject();
+        json.put(JSON_ID, mId.toString());
+        json.put(JSON_TITLE, mTitle);
+        json.put(JSON_DATE, mDate.getTime());
+        json.put(JSON_COMMENT, mComment);
+        json.put(JSON_VCD, mViableCellDensity);
+        json.put(JSON_VIABILITY, mViability);
+        json.put(JSON_Q1DEAD, mQ1Count.getDeadCount());
+        json.put(JSON_Q1LIVE, mQ1Count.getLiveCount());
+        json.put(JSON_Q2DEAD, mQ2Count.getDeadCount());
+        json.put(JSON_Q2LIVE, mQ2Count.getLiveCount());
+        json.put(JSON_Q3DEAD, mQ3Count.getDeadCount());
+        json.put(JSON_Q3LIVE, mQ3Count.getLiveCount());
+        json.put(JSON_Q4DEAD, mQ4Count.getDeadCount());
+        json.put(JSON_Q4LIVE, mQ4Count.getLiveCount());
+
+        return json;
     }
 }
