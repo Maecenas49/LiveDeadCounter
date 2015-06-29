@@ -2,6 +2,7 @@ package com.computing.millenium.springers.livedeadcounter;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -50,6 +51,10 @@ public class TotalCountSingleton {
 
     public void addCount(TotalCount c){
         mTotalCounts.add(c);
+    }
+
+    public void deleteCount (TotalCount c) {
+        mTotalCounts.remove(c);
     }
 
     public boolean saveCounts() {

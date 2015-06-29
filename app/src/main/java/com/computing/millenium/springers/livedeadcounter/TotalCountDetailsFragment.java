@@ -1,6 +1,9 @@
 package com.computing.millenium.springers.livedeadcounter;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -29,6 +32,9 @@ public class TotalCountDetailsFragment extends Fragment {
     public static final String EXTRA_ID =
             "com.computing.millenium.springers.livedeadcounter.count_id";
     private static final String TAG = "CountDetailsFragment";
+    private static final String CONFIRM_DELETE_DIALOG = "delete";
+
+    private static final int REQUEST_CONFIRM_DELETE = 1;
 
     private TotalCount mTotalCount;
 
@@ -112,7 +118,23 @@ public class TotalCountDetailsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.delete_settings:
+                FragmentManager fm = getActivity().getFragmentManager();
+                ConfirmDeleteDialog dialog = new ConfirmDeleteDialog();
+                dialog.setTargetFragment(TotalCountDetailsFragment.this, REQUEST_CONFIRM_DELETE);
+                dialog.show(fm, CONFIRM_DELETE_DIALOG);
+                return true;
             default: return false;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
+        if (requestCode == REQUEST_CONFIRM_DELETE){
+            TotalCountSingleton counts = TotalCountSingleton.get(getActivity());
+            counts.deleteCount(mTotalCount);
+            getActivity().finish();
         }
     }
 
