@@ -33,8 +33,10 @@ public class TotalCountDetailsFragment extends Fragment {
             "com.computing.millenium.springers.livedeadcounter.count_id";
     private static final String TAG = "CountDetailsFragment";
     private static final String CONFIRM_DELETE_DIALOG = "delete";
+    private static final String DATE_TIME_DIALOG = "dateTime";
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
+    private static final int REQUEST_DATE = 2;
 
     private TotalCount mTotalCount;
 
@@ -94,7 +96,35 @@ public class TotalCountDetailsFragment extends Fragment {
         Log.d(TAG, "Retrieve date: " + date.toString());
         dateButton.setText(
                 DateFormat.getMediumDateFormat(getActivity()).format(date) + "; "
-        + DateFormat.getTimeFormat(getActivity()).format(date));
+                        + DateFormat.getTimeFormat(getActivity()).format(date));
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getFragmentManager();
+                DateTimePickerFragment dialog = DateTimePickerFragment
+                        .newInstance(mTotalCount.getDate());
+                dialog.setTargetFragment(TotalCountDetailsFragment.this, REQUEST_DATE);
+                dialog.show(fm, DATE_TIME_DIALOG);
+            }
+        });
+
+        EditText comment = (EditText)v.findViewById(R.id.total_count_comments);
+        comment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Blank
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mTotalCount.setComment(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Blank
+            }
+        });
 
         return v;
     }
