@@ -1,9 +1,12 @@
 package com.computing.millenium.springers.livedeadcounter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -71,7 +74,19 @@ public class DateTimePickerFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.date_time_picker_title)
-                .setPositiveButton(android.R.string.ok, null)
+                .setPositiveButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (getTargetFragment() == null)
+                                    return;
+
+                                Intent i = new Intent();
+                                i.putExtra(DATE_EXTRA, mDate);
+                                getTargetFragment().onActivityResult(getTargetRequestCode(),
+                                        Activity.RESULT_OK, i);
+                            }
+                        })
                 .setView(v)
                 .create();
 

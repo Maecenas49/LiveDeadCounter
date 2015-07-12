@@ -39,6 +39,7 @@ public class TotalCountDetailsFragment extends Fragment {
     private static final int REQUEST_DATE = 2;
 
     private TotalCount mTotalCount;
+    private Button mDateButton;
 
     @Nullable
     @Override
@@ -91,13 +92,13 @@ public class TotalCountDetailsFragment extends Fragment {
         q4DetailsText.setText(String.format(quadText, mTotalCount.getQ4Count().getLiveCount(),
                 mTotalCount.getQ4Count().getDeadCount()));
 
-        Button dateButton = (Button)v.findViewById(R.id.total_count_date);
+        mDateButton = (Button)v.findViewById(R.id.total_count_date);
         Date date = mTotalCount.getDate();
         Log.d(TAG, "Retrieve date: " + date.toString());
-        dateButton.setText(
+        mDateButton.setText(
                 DateFormat.getMediumDateFormat(getActivity()).format(date) + "; "
                         + DateFormat.getTimeFormat(getActivity()).format(date));
-        dateButton.setOnClickListener(new View.OnClickListener() {
+        mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getFragmentManager();
@@ -165,6 +166,13 @@ public class TotalCountDetailsFragment extends Fragment {
             TotalCountSingleton counts = TotalCountSingleton.get(getActivity());
             counts.deleteCount(mTotalCount);
             getActivity().finish();
+        }
+        if (requestCode == REQUEST_DATE){
+            Date date = (Date)data.getSerializableExtra(DateTimePickerFragment.DATE_EXTRA);
+            mTotalCount.setDate(date);
+            mDateButton.setText(
+                    DateFormat.getMediumDateFormat(getActivity()).format(date) + "; "
+                            + DateFormat.getTimeFormat(getActivity()).format(date));
         }
     }
 
