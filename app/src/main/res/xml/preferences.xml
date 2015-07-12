@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="Sound Enabled"
+        android:title="Sound"
+        android:summaryOn="Button Sounds Enabled"
+        android:summaryOff="Button Sounds Disabled"/>
+    <EditTextPreference
+        android:key="Concentration"
+        android:title="Concentration"
+        android:summary="Trypan Blue Concentration (%)"
+        android:inputType="number"
+        android:defaultValue="10"
+        android:maxLength="2"/>
+</PreferenceScreen>

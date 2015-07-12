@@ -1,22 +1,35 @@
 package com.computing.millenium.springers.livedeadcounter;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
-
-public class LiveDeadCounterActivity extends FragmentActivity {
+/**
+ * Created by Mike on 6/21/2015.
+ */
+public class PreferencesActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_live_dead_counter);
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
+                new preferenceFragment()).commit();
     }
 
+    public static class preferenceFragment extends PreferenceFragment{
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,11 +46,11 @@ public class LiveDeadCounterActivity extends FragmentActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-                Intent settingsIntent = new Intent(this, PreferencesActivity.class);
-                startActivity(settingsIntent);
-                return true;
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 }
+
+

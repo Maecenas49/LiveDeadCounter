@@ -4,31 +4,31 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Vibrator;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.UUID;
 
 public class LiveDeadCounterFragment extends Fragment {
 
     private static final int REQUEST_CALC = 1;
     //Implement total counts class
-    private int mDilution;
+    private int mConcentration;
     private int mQ1LiveCount;
     private int mQ1DeadCount;
 
@@ -58,14 +58,19 @@ public class LiveDeadCounterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        SharedPreferences preferenceManager = PreferenceManager
+                .getDefaultSharedPreferences(getActivity().getBaseContext());
+        mConcentration = Integer.parseInt(preferenceManager.getString("Concentration","10"));
+        Log.d(TAG, "Retrieved Concentration as " + Integer.toString(mConcentration));
+
         if (savedInstanceState == null) {
             mQ1DeadCount = 0;
             mQ1LiveCount = 0;
             mTotalCount = new TotalCount();
             mTotalCount.getQ1Count().setActivated(true);
+            mTotalCount.setTrypanConcentration(mConcentration);
         }
-        //TODO: Save dilution in settings
-        mDilution = 10;
+
         View v = inflater.inflate(R.layout.fragment_live_dead_counter, container, false);
 
         final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -211,6 +216,7 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "OptionsItemSelected ID:" + Integer.toString(item.getItemId()));
         switch (item.getItemId()){
             case R.id.clear_all_settings:
                 //Clear all quadrants and reset to quadrant 1
@@ -224,6 +230,7 @@ public class LiveDeadCounterFragment extends Fragment {
             case R.id.counts_list_settings:
                 Intent intent = new Intent(getActivity(), CountsListActivity.class);
                 startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

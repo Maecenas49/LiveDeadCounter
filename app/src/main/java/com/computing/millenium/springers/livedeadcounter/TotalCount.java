@@ -21,7 +21,6 @@ public class TotalCount {
     private String mComment;
     private Date mDate;
 
-    //TODO:Incorporate active quadrants
     private static final String JSON_ID = "id";
     private static final String JSON_TITLE = "Title";
     private static final String JSON_DATE ="Date";
@@ -44,6 +43,8 @@ public class TotalCount {
 
     private double mViability;
     private double mViableCellDensity;
+
+    private int mTrypanConcentration;
 
     public TotalCount(){
         //Generate unique identifier
@@ -161,8 +162,7 @@ public class TotalCount {
         //TODO: Use dilution in settings
         double Viability = (double) totalLiveCounts/ (totalLiveCounts + totalDeadCounts) * 100;
         double ViableCellDensity = (double) totalLiveCounts/numActiveQuads
-                * 10000;
-                //* (1 + (10/100f));
+                * 10000  * (1 + (mTrypanConcentration/100f));
         setViability(Viability);
         setViableCellDensity(ViableCellDensity);
         return new double[] {Viability, ViableCellDensity};
@@ -223,5 +223,13 @@ public class TotalCount {
         json.put(JSON_Q4LIVE, mQ4Count.getLiveCount());
 
         return json;
+    }
+
+    public int getTrypanConcentration() {
+        return mTrypanConcentration;
+    }
+
+    public void setTrypanConcentration(int trypanConcentration) {
+        mTrypanConcentration = trypanConcentration;
     }
 }

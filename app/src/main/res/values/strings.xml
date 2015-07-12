@@ -23,4 +23,5 @@
     <string name="view_counts">View Counts</string>
     <string name="confirm_delete_text">Confirm Delete</string>
     <string name="date_time_picker_title">Select Date</string>
+    <string name="settings">Settings</string>
 </resources>
