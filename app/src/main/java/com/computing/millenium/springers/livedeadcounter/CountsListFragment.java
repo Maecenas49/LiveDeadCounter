@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,20 @@ public class CountsListFragment extends ListFragment {
         mTotalCounts = TotalCountSingleton.get(getActivity()).getTotalCounts();
 
         ArrayAdapter<TotalCount> adapter = new ArrayAdapter<TotalCount>(getActivity(),
-                android.R.layout.simple_list_item_1, mTotalCounts);
+                android.R.layout.simple_list_item_2,android.R.id.text1, mTotalCounts)
+        {
+            @Override
+           public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView headerText = (TextView) view.findViewById(android.R.id.text1);
+                TextView dateText = (TextView) view.findViewById(android.R.id.text2);
+
+                headerText.setText(mTotalCounts.get(position).getTitle());
+                dateText.setText(mTotalCounts.get(position).getDateString(getActivity()));
+
+                return view;
+            }
+        };
 
         setListAdapter(adapter);
 

@@ -96,8 +96,7 @@ public class TotalCountDetailsFragment extends Fragment {
         Date date = mTotalCount.getDate();
         Log.d(TAG, "Retrieve date: " + date.toString());
         mDateButton.setText(
-                DateFormat.getMediumDateFormat(getActivity()).format(date) + "; "
-                        + DateFormat.getTimeFormat(getActivity()).format(date));
+                mTotalCount.getDateString(getActivity()));
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,8 +170,7 @@ public class TotalCountDetailsFragment extends Fragment {
             Date date = (Date)data.getSerializableExtra(DateTimePickerFragment.DATE_EXTRA);
             mTotalCount.setDate(date);
             mDateButton.setText(
-                    DateFormat.getMediumDateFormat(getActivity()).format(date) + "; "
-                            + DateFormat.getTimeFormat(getActivity()).format(date));
+                    mTotalCount.getDateString(getActivity()));
         }
     }
 

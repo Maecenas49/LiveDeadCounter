@@ -1,5 +1,6 @@
 package com.computing.millenium.springers.livedeadcounter;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -154,14 +155,18 @@ public class TotalCount {
         int numActiveQuads = activeQuads.size();
         int totalLiveCounts = 0;
         int totalDeadCounts = 0;
-        //TODO: Check for all zero values before calculation
+        //Check for all zero values and remove from count before calculation
+        int activeIncluded = 0;
         for (QuadrantCount q:activeQuads){
-            totalLiveCounts += q.getLiveCount();
-            totalDeadCounts += q.getDeadCount();
+            if (!(q.getLiveCount()==0 & q.getDeadCount()==0)){
+                totalLiveCounts += q.getLiveCount();
+                totalDeadCounts += q.getDeadCount();
+                activeIncluded += 1;
+            }
         }
-        //TODO: Use dilution in settings
+        //Calculate viability and VCD using dilution in settings
         double Viability = (double) totalLiveCounts/ (totalLiveCounts + totalDeadCounts) * 100;
-        double ViableCellDensity = (double) totalLiveCounts/numActiveQuads
+        double ViableCellDensity = (double) totalLiveCounts/activeIncluded
                 * 10000  * (1 + (mTrypanConcentration/100f));
         setViability(Viability);
         setViableCellDensity(ViableCellDensity);
@@ -231,5 +236,12 @@ public class TotalCount {
 
     public void setTrypanConcentration(int trypanConcentration) {
         mTrypanConcentration = trypanConcentration;
+    }
+
+    public String getDateString(Context context){
+        String date = android.text.format.DateFormat.getMediumDateFormat(context).format(mDate)
+                + ", "
+                + android.text.format.DateFormat.getTimeFormat(context).format(mDate);
+        return date;
     }
 }
