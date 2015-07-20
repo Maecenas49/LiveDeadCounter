@@ -109,6 +109,7 @@ public class TotalCountDetailsFragment extends Fragment {
         });
 
         EditText comment = (EditText)v.findViewById(R.id.total_count_comments);
+        comment.setText(mTotalCount.getComment());
         comment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -5,6 +5,11 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Vibrator;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,9 +51,13 @@ public class LiveDeadCounterFragment extends Fragment {
     private TextView mDeadCountTextView;
     private TextView mLiveCountTextView;
 
+    private boolean mSoundOn;
+    private boolean mDeadSoundLoaded;
+    private boolean mLiveSoundLoaded;
+
     private TotalCount mTotalCount;
-    private float mViableCellDensity;
-    private float mViability;
+
+    private SoundPool mSoundPool;
 
     private static final String DIALOG_RESULTS = "results";
     private final String TAG = "LiveDeadCounterFragment";
@@ -60,7 +70,10 @@ public class LiveDeadCounterFragment extends Fragment {
                              Bundle savedInstanceState) {
         SharedPreferences preferenceManager = PreferenceManager
                 .getDefaultSharedPreferences(getActivity().getBaseContext());
-        mConcentration = Integer.parseInt(preferenceManager.getString("Concentration","10"));
+        mConcentration = Integer.parseInt(preferenceManager.getString("Concentration", "10"));
+        mSoundOn = preferenceManager.getBoolean("Sound Enabled", true);
+
+        Log.d(TAG, "Retrieved Sound Option: " + String.valueOf(mSoundOn));
         Log.d(TAG, "Retrieved Concentration as " + Integer.toString(mConcentration));
 
         if (savedInstanceState == null) {
@@ -73,13 +86,31 @@ public class LiveDeadCounterFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_live_dead_counter, container, false);
 
-        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-
         //Get Textviews associated with counts and set to initial count
         mLiveCountTextView = (TextView) v.findViewById(R.id.liveTextView);
         mDeadCountTextView = (TextView) v.findViewById(R.id.deadTextView);
         mLiveCountTextView.setText(Integer.toString(mQ1LiveCount));
         mDeadCountTextView.setText(Integer.toString(mQ1DeadCount));
+
+        getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        mSoundPool = getSoundPool();
+        final int liveSoundID = mSoundPool
+                .load(getActivity(), R.raw.multimedia_button_click_014, 1);
+        final int deadSoundID = mSoundPool
+                .load(getActivity(), R.raw.multimedia_button_click_028, 1);
+        mLiveSoundLoaded = false;
+        mDeadSoundLoaded = true;
+        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                if (sampleId == deadSoundID){
+                    mDeadSoundLoaded = true;
+                }
+                if (sampleId == liveSoundID){
+                    mLiveSoundLoaded = true;
+                }
+            }
+        });
 
         //Set live counter button with haptic feedback and calculation update on each click
         mLiveCounter = (Button) v.findViewById(R.id.liveButton);
@@ -87,6 +118,9 @@ public class LiveDeadCounterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                if (mSoundOn){
+                    playSound(mSoundPool, liveSoundID, mLiveSoundLoaded);
+                }
                 QuadrantCount activeCount = getActiveQuadrant();
                 if (activeCount != null) {
                     activeCount.incrementLiveCount();
@@ -101,6 +135,10 @@ public class LiveDeadCounterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                if (mSoundOn){
+//                    mDeadPlayer.play();
+                    playSound(mSoundPool, deadSoundID, mDeadSoundLoaded);
+                }
                 QuadrantCount activeCount = getActiveQuadrant();
                 if (activeCount != null) {
                     activeCount.incrementDeadCount();
@@ -183,15 +221,6 @@ public class LiveDeadCounterFragment extends Fragment {
         return v;
     }
 
-    /**
-    private void calculateAndUpdate(TextView calcView) {
-        //calculate();
-        String calcText = getString(R.string.vcd_text);
-        NumberFormat formatter = new DecimalFormat("0.##E0");
-
-        calcView.setText(String.format(calcText, formatter.format(mViableCellDensity), mViability));
-    }**/
-
     //Return which quadrant is currently active
     private QuadrantCount getActiveQuadrant(){
         if (mQ1Button.isChecked()) return mTotalCount.getQ1Count();
@@ -252,5 +281,46 @@ public class LiveDeadCounterFragment extends Fragment {
         QuadrantCount activeCount = getActiveQuadrant();
         mDeadCountTextView.setText(Integer.toString(activeCount.getDeadCount()));
         mLiveCountTextView.setText(Integer.toString(activeCount.getLiveCount()));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    public SoundPool getSoundPool(){
+        SoundPool soundPool;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .build();
+
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(2)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+
+        } else {
+            soundPool = new SoundPool(2, AudioManager.STREAM_NOTIFICATION, 0);
+        }
+        return soundPool;
+    }
+
+    private void playSound(SoundPool soundPool, int soundID, boolean loaded){
+        AudioManager audioManager = (AudioManager)
+                getActivity().getSystemService(getActivity().AUDIO_SERVICE);
+        final float volume = ((float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)) /
+                audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        // Is the sound loaded already?
+        if (loaded) {
+            soundPool.play(soundID, volume, volume, 1, 0, 1f);
+    }
     }
 }

@@ -18,7 +18,10 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:hint="@string/total_count_title_hint"/>
+            android:hint="@string/total_count_title_hint"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="text"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
