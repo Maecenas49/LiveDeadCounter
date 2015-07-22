@@ -29,8 +29,8 @@
 
     <string name="directions_text">1. Add Trypan blue to cells at desired concentration
         (typically 10%, make sure to adjust final concentration in settings). \n \n
-        2. Add 10uL of cells to hemacytometer and view under microscope. \n \n
-        3. Count the number of cells in each of the 4 quadrants as shown above. \n \n
+        2. Add 10uL of cells to hemocytometer and view under microscope. \n \n
+        3. Count the number of cells in each of the 4 quadrants as shown. \n \n
         4. Select \"Calculate\" to calculate the viable cell density and viability.* \n \n
         *<b>NOTE:</b> only quadrants with non-zero counts will be included in the calculation</string>
     <string name="help">Help</string>
