@@ -75,15 +75,17 @@ public class LiveDeadCounterFragment extends Fragment {
         mConcentration = Integer.parseInt(preferenceManager.getString("Concentration", "10"));
         mSoundOn = preferenceManager.getBoolean("Sound Enabled", true);
 
-        Log.d(TAG, "Retrieved Sound Option: " + String.valueOf(mSoundOn));
-        Log.d(TAG, "Retrieved Concentration as " + Integer.toString(mConcentration));
+//        Log.d(TAG, "Retrieved Sound Option: " + String.valueOf(mSoundOn));
+//        Log.d(TAG, "Retrieved Concentration as " + Integer.toString(mConcentration));
 
         if (savedInstanceState == null) {
             mQ1DeadCount = 0;
             mQ1LiveCount = 0;
             mTotalCount = new TotalCount();
+        Log.d(TAG, "onCreateView() called");
             mTotalCount.getQ1Count().setActivated(true);
             mTotalCount.setTrypanConcentration(mConcentration);
+
         }
 
         View v = inflater.inflate(R.layout.fragment_live_dead_counter, container, false);
@@ -138,7 +140,6 @@ public class LiveDeadCounterFragment extends Fragment {
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 if (mSoundOn){
-//                    mDeadPlayer.play();
                     playSound(mSoundPool, deadSoundID, mDeadSoundLoaded);
                 }
                 QuadrantCount activeCount = getActiveQuadrant();
@@ -220,6 +221,8 @@ public class LiveDeadCounterFragment extends Fragment {
             }
         });
 
+        clearAll();
+
         return v;
     }
 
@@ -234,6 +237,7 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
@@ -280,11 +284,7 @@ public class LiveDeadCounterFragment extends Fragment {
         }
         if(requestCode == REQUEST_CONFIRM_CLEAR){
             //Clear all quadrants and reset to quadrant 1
-            mQ1Button.setChecked(true);
-            mQ2Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
-            mQ3Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
-            mQ4Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
-            mTotalCount.resetCounts();
+            clearAll();
             updateLiveDeadText();
         }
     }
@@ -297,13 +297,23 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "OnDestroy() called");
         super.onDestroy();
 
     }
 
     @Override
     public void onResume() {
+        Log.d(TAG, "OnResume() called");
+        mTotalCount = new TotalCount();
+        clearAll();
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.d(TAG, "onPause() called");
+        super.onPause();
     }
 
     public SoundPool getSoundPool(){
@@ -334,5 +344,14 @@ public class LiveDeadCounterFragment extends Fragment {
         if (loaded) {
             soundPool.play(soundID, volume, volume, 1, 0, 1f);
     }
+    }
+
+    private void clearAll(){
+        mQ1Button.setChecked(true);
+        mQ2Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+        mQ3Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+        mQ4Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+        mTotalCount.resetCounts();
+        updateLiveDeadText();
     }
 }

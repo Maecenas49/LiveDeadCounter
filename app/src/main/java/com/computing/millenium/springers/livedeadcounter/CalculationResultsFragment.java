@@ -45,7 +45,7 @@ public class CalculationResultsFragment extends DialogFragment {
         double viability = getArguments().getDouble(EXTRA_VIABILITY);
         double VCD = getArguments().getDouble(EXTRA_VCD);
 
-        String calcText = getString(R.string.vcd_text);
+        String calcText = getString(R.string.vcd_calculation_text);
         NumberFormat formatter = new DecimalFormat("0.##E0");
         TextView textView = (TextView) v.findViewById(R.id.calculate_dialog_text_view);
         textView.setText(fromHtml(String.format(calcText, formatter.format(VCD), viability)));

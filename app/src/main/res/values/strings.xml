@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Live Dead Counter</string>
     <string name="action_settings">Settings</string>
-    <string name="vcd_text">&lt;u> &lt;b> Viable Cell Density (VCD)&lt;/b> &lt;/u> &lt;br>
+    <string name="vcd_calculation_text">&lt;u> &lt;b> Viable Cell Density (VCD)&lt;/b> &lt;/u> &lt;br>
         %1$s cells/mL &lt;br>&lt;br> &lt;u> &lt;b>Viability &lt;/b> &lt;/u> &lt;br>
         %2$4.2f%%</string>
+    <string name="vcd_text">Viable Cell Density (VCD) = %1$s cells/mL \n Viability = %2$4.2f%%</string>
     <string name="Q1Text">Q1</string>
     <string name="Q2Text">Q2</string>
     <string name="Q3Text">Q3</string>
