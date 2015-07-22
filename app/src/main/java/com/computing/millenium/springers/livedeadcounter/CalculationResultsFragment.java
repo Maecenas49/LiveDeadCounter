@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import static android.text.Html.fromHtml;
+
 /**
  * Created by Mike on 6/19/2015.
  */
@@ -46,7 +48,7 @@ public class CalculationResultsFragment extends DialogFragment {
         String calcText = getString(R.string.vcd_text);
         NumberFormat formatter = new DecimalFormat("0.##E0");
         TextView textView = (TextView) v.findViewById(R.id.calculate_dialog_text_view);
-        textView.setText(String.format(calcText, formatter.format(VCD), viability));
+        textView.setText(fromHtml(String.format(calcText, formatter.format(VCD), viability)));
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
