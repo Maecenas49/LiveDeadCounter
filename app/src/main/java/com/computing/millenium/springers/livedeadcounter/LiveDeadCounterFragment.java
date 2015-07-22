@@ -33,6 +33,7 @@ import java.util.UUID;
 public class LiveDeadCounterFragment extends Fragment {
 
     private static final int REQUEST_CALC = 1;
+    private static final int REQUEST_CONFIRM_CLEAR = 2;
     //Implement total counts class
     private int mConcentration;
     private int mQ1LiveCount;
@@ -60,6 +61,7 @@ public class LiveDeadCounterFragment extends Fragment {
     private SoundPool mSoundPool;
 
     private static final String DIALOG_RESULTS = "results";
+    private static final String CONFIRM_CLEAR_DIALOG = "clear";
     private final String TAG = "LiveDeadCounterFragment";
 
     public LiveDeadCounterFragment() {
@@ -248,17 +250,18 @@ public class LiveDeadCounterFragment extends Fragment {
         Log.d(TAG, "OptionsItemSelected ID:" + Integer.toString(item.getItemId()));
         switch (item.getItemId()){
             case R.id.clear_all_settings:
-                //Clear all quadrants and reset to quadrant 1
-                mQ1Button.setChecked(true);
-                mQ2Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
-                mQ3Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
-                mQ4Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
-                mTotalCount.resetCounts();
-                updateLiveDeadText();
+                FragmentManager fm = getActivity().getFragmentManager();
+                ConfirmClearDialog dialog = new ConfirmClearDialog();
+                dialog.setTargetFragment(LiveDeadCounterFragment.this, REQUEST_CONFIRM_CLEAR);
+                dialog.show(fm, CONFIRM_CLEAR_DIALOG);
                 return true;
             case R.id.counts_list_settings:
-                Intent intent = new Intent(getActivity(), CountsListActivity.class);
-                startActivity(intent);
+                Intent listIntent = new Intent(getActivity(), CountsListActivity.class);
+                startActivity(listIntent);
+                return true;
+            case R.id.help_settings:
+                Intent helpIntent = new Intent(getActivity(), HelpActivity.class);
+                startActivity(helpIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -274,6 +277,15 @@ public class LiveDeadCounterFragment extends Fragment {
             Intent intent = new Intent(getActivity(), TotalCountDetailsActivity.class);
             intent.putExtra(TotalCountDetailsFragment.EXTRA_ID, id);
             startActivity(intent);
+        }
+        if(requestCode == REQUEST_CONFIRM_CLEAR){
+            //Clear all quadrants and reset to quadrant 1
+            mQ1Button.setChecked(true);
+            mQ2Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+            mQ3Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+            mQ4Button.setTextColor(getResources().getColor(R.color.quadButtonInactiveText));
+            mTotalCount.resetCounts();
+            updateLiveDeadText();
         }
     }
 

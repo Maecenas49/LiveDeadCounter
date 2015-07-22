@@ -39,6 +39,12 @@
                   android:parentActivityName=".LiveDeadCounterActivity">
 
         </activity>
+
+        <activity android:name=".HelpActivity"
+                  android:label="@string/help"
+                  android:parentActivityName=".LiveDeadCounterActivity">
+
+        </activity>
     </application>
 
 </manifest>

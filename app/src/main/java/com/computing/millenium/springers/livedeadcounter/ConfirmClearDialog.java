@@ -12,7 +12,7 @@ import android.view.View;
 /**
  * Created by Mike on 6/28/2015.
  */
-public class ConfirmDeleteDialog extends DialogFragment {
+public class ConfirmClearDialog extends DialogFragment {
 
 
     @Override
@@ -27,7 +27,7 @@ public class ConfirmDeleteDialog extends DialogFragment {
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
-                .setTitle(R.string.confirm_delete_text)
+                .setTitle(R.string.confirm_clear)
                 .create();
     }
 
