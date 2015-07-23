@@ -82,7 +82,7 @@ public class LiveDeadCounterFragment extends Fragment {
             mQ1DeadCount = 0;
             mQ1LiveCount = 0;
             mTotalCount = new TotalCount();
-        Log.d(TAG, "onCreateView() called");
+//        Log.d(TAG, "onCreateView() called");
             mTotalCount.getQ1Count().setActivated(true);
             mTotalCount.setTrypanConcentration(mConcentration);
 
@@ -237,7 +237,7 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called");
+//        Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
@@ -251,7 +251,7 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "OptionsItemSelected ID:" + Integer.toString(item.getItemId()));
+//        Log.d(TAG, "OptionsItemSelected ID:" + Integer.toString(item.getItemId()));
         switch (item.getItemId()){
             case R.id.clear_all_settings:
                 FragmentManager fm = getActivity().getFragmentManager();
@@ -297,14 +297,14 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "OnDestroy() called");
+//        Log.d(TAG, "OnDestroy() called");
         super.onDestroy();
 
     }
 
     @Override
     public void onResume() {
-        Log.d(TAG, "OnResume() called");
+//        Log.d(TAG, "OnResume() called");
         mTotalCount = new TotalCount();
         clearAll();
         super.onResume();
@@ -312,7 +312,7 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause() called");
+//        Log.d(TAG, "onPause() called");
         super.onPause();
     }
 
