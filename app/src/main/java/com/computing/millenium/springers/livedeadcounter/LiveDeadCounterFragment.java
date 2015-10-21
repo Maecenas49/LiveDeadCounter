@@ -239,7 +239,7 @@ public class LiveDeadCounterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 //        Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+//        setRetainInstance(true);
         setHasOptionsMenu(true);
     }
 
@@ -281,6 +281,8 @@ public class LiveDeadCounterFragment extends Fragment {
             Intent intent = new Intent(getActivity(), TotalCountDetailsActivity.class);
             intent.putExtra(TotalCountDetailsFragment.EXTRA_ID, id);
             startActivity(intent);
+            mTotalCount = new TotalCount();
+            clearAll();
         }
         if(requestCode == REQUEST_CONFIRM_CLEAR){
             //Clear all quadrants and reset to quadrant 1
@@ -303,10 +305,20 @@ public class LiveDeadCounterFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        if (mSoundPool != null) {
+            mSoundPool.release();
+//            Log.d(TAG, "Sound Pool released");
+        }
+        super.onDestroyView();
+    }
+
+    @Override
     public void onResume() {
 //        Log.d(TAG, "OnResume() called");
-        mTotalCount = new TotalCount();
-        clearAll();
+//        mTotalCount = new TotalCount();
+//        clearAll();
+
         super.onResume();
     }
 
@@ -320,8 +332,8 @@ public class LiveDeadCounterFragment extends Fragment {
         SoundPool soundPool;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
                     .build();
 
             soundPool = new SoundPool.Builder()
@@ -330,7 +342,7 @@ public class LiveDeadCounterFragment extends Fragment {
                     .build();
 
         } else {
-            soundPool = new SoundPool(2, AudioManager.STREAM_NOTIFICATION, 0);
+            soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         }
         return soundPool;
     }
