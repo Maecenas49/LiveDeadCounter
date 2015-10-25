@@ -75,14 +75,10 @@ public class LiveDeadCounterFragment extends Fragment {
         mConcentration = Integer.parseInt(preferenceManager.getString("Concentration", "10"));
         mSoundOn = preferenceManager.getBoolean("Sound Enabled", true);
 
-//        Log.d(TAG, "Retrieved Sound Option: " + String.valueOf(mSoundOn));
-//        Log.d(TAG, "Retrieved Concentration as " + Integer.toString(mConcentration));
-
         if (savedInstanceState == null) {
             mQ1DeadCount = 0;
             mQ1LiveCount = 0;
             mTotalCount = new TotalCount();
-//        Log.d(TAG, "onCreateView() called");
             mTotalCount.getQ1Count().setActivated(true);
             mTotalCount.setTrypanConcentration(mConcentration);
 
@@ -237,7 +233,6 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
 //        setRetainInstance(true);
         setHasOptionsMenu(true);
@@ -251,7 +246,6 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        Log.d(TAG, "OptionsItemSelected ID:" + Integer.toString(item.getItemId()));
         switch (item.getItemId()){
             case R.id.clear_all_settings:
                 FragmentManager fm = getActivity().getFragmentManager();
@@ -299,7 +293,6 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-//        Log.d(TAG, "OnDestroy() called");
         super.onDestroy();
 
     }
@@ -308,14 +301,12 @@ public class LiveDeadCounterFragment extends Fragment {
     public void onDestroyView() {
         if (mSoundPool != null) {
             mSoundPool.release();
-//            Log.d(TAG, "Sound Pool released");
         }
         super.onDestroyView();
     }
 
     @Override
     public void onResume() {
-//        Log.d(TAG, "OnResume() called");
 //        mTotalCount = new TotalCount();
 //        clearAll();
 
@@ -324,7 +315,6 @@ public class LiveDeadCounterFragment extends Fragment {
 
     @Override
     public void onPause() {
-//        Log.d(TAG, "onPause() called");
         super.onPause();
     }
 

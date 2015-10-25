@@ -93,7 +93,6 @@ public class TotalCountDetailsFragment extends Fragment {
 
         mDateButton = (Button)v.findViewById(R.id.total_count_date);
         Date date = mTotalCount.getDate();
-//        Log.d(TAG, "Retrieve date: " + date.toString());
         mDateButton.setText(
                 mTotalCount.getDateString(getActivity()));
         mDateButton.setOnClickListener(new View.OnClickListener() {

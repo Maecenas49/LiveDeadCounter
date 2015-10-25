@@ -68,7 +68,7 @@ public class TotalCount {
         try{
             Long date = Long.parseLong(json.getString(JSON_DATE));
             mDate = new Date(date);
-            Log.d(TAG, "Loaded Date: " + mDate.toString());}
+            }
         catch (Exception e){
             Log.e(TAG, "Failed to load date: ", e);
         }
