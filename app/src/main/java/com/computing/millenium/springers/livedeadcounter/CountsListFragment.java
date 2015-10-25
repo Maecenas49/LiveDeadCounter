@@ -33,12 +33,16 @@ public class CountsListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         mTotalCounts = TotalCountSingleton.get(getActivity()).getTotalCounts();
 
+
         ArrayAdapter<TotalCount> adapter = new ArrayAdapter<TotalCount>(getActivity(),
                 android.R.layout.simple_list_item_2,android.R.id.text1, mTotalCounts)
         {
             @Override
            public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
+                //Change item layout so it incorporates a color change on selection
+                view.setBackgroundDrawable(
+                        getResources().getDrawable(R.drawable.counts_list_item_activated));
                 TextView headerText = (TextView) view.findViewById(android.R.id.text1);
                 TextView dateText = (TextView) view.findViewById(android.R.id.text2);
 
