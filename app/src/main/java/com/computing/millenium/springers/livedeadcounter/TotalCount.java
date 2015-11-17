@@ -72,7 +72,7 @@ public class TotalCount {
         catch (Exception e){
             Log.e(TAG, "Failed to load date: ", e);
         }
-        //TODO: Extract activated quadrants
+
         mQ1Count = new QuadrantCount(json.getInt(JSON_Q1LIVE), json.getInt(JSON_Q1DEAD), true);
         mQ2Count = new QuadrantCount(json.getInt(JSON_Q2LIVE), json.getInt(JSON_Q2DEAD), true);
         mQ3Count = new QuadrantCount(json.getInt(JSON_Q3LIVE), json.getInt(JSON_Q3DEAD), true);
