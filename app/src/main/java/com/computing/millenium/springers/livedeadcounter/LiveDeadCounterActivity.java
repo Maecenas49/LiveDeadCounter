@@ -8,12 +8,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.kobakei.ratethisapp.RateThisApp;
+
 
 public class LiveDeadCounterActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Custom criteria: 3 days and 5 launches
+        RateThisApp.Config config = new RateThisApp.Config(3, 5);
+        // Custom title and message
+        RateThisApp.init(config);
         setContentView(R.layout.activity_live_dead_counter);
     }
 
@@ -39,5 +46,15 @@ public class LiveDeadCounterActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Monitor launch times and interval from installation
+        RateThisApp.onStart(this);
+        // If the criteria is satisfied, "Rate this app" dialog will be shown
+        RateThisApp.showRateDialogIfNeeded(this);
     }
 }
