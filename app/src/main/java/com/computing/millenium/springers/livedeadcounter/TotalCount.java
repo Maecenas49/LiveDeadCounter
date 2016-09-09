@@ -72,7 +72,6 @@ public class TotalCount {
         catch (Exception e){
             Log.e(TAG, "Failed to load date: ", e);
         }
-        //TODO: Extract activated quadrants
         mQ1Count = new QuadrantCount(json.getInt(JSON_Q1LIVE), json.getInt(JSON_Q1DEAD), true);
         mQ2Count = new QuadrantCount(json.getInt(JSON_Q2LIVE), json.getInt(JSON_Q2DEAD), true);
         mQ3Count = new QuadrantCount(json.getInt(JSON_Q3LIVE), json.getInt(JSON_Q3DEAD), true);
@@ -244,4 +243,32 @@ public class TotalCount {
                 + android.text.format.DateFormat.getTimeFormat(context).format(mDate);
         return date;
     }
+
+    public String toCSV(){
+    //Return a string representing all data corresponding to the Count
+        final String CSV_DELIMITER = ",";
+        return mId.toString()+CSV_DELIMITER+
+                mTitle+CSV_DELIMITER+
+                mDate.toString()+CSV_DELIMITER+
+                mComment+CSV_DELIMITER+
+                String.valueOf(mViableCellDensity)+CSV_DELIMITER+
+                String.valueOf(mViability)+CSV_DELIMITER+
+                String.valueOf(mQ1Count.getLiveCount())+CSV_DELIMITER+
+                String.valueOf(mQ1Count.getDeadCount())+CSV_DELIMITER+
+                String.valueOf(mQ2Count.getLiveCount())+CSV_DELIMITER+
+                String.valueOf(mQ2Count.getDeadCount())+CSV_DELIMITER+
+                String.valueOf(mQ3Count.getLiveCount())+CSV_DELIMITER+
+                String.valueOf(mQ3Count.getDeadCount())+CSV_DELIMITER+
+                String.valueOf(mQ4Count.getLiveCount())+CSV_DELIMITER+
+                String.valueOf(mQ4Count.getDeadCount())+CSV_DELIMITER;
+
+    }
+
+    public String getCSVHeader(){
+        return "ID,Title,Date,Comment,Viable Cell Density, Viability, " +
+                "Q1 Live Count, Q1 Dead Count,Q2 Live Count, Q2 Dead Count," +
+                "Q3 Live Count, Q3 Dead Count,Q4 Live Count, Q4 Dead Count";
+    }
+
 }
+

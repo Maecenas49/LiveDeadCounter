@@ -4,7 +4,8 @@
         android:key="Sound Enabled"
         android:title="Sound"
         android:summaryOn="Button Sounds Enabled"
-        android:summaryOff="Button Sounds Disabled"/>
+        android:summaryOff="Button Sounds Disabled"
+        android:defaultValue="true"/>
     <EditTextPreference
         android:key="Concentration"
         android:title="Concentration"

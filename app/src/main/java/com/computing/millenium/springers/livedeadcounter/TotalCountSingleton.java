@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -65,6 +68,10 @@ public class TotalCountSingleton {
             Log.e(TAG, "Error saving crimes: ", e);
             return false;
         }
+    }
+
+    public void toCSV () throws JSONException, IOException {
+
     }
 
 }

@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
  */
 public class CountsListFragment extends ListFragment {
     private ArrayList<TotalCount> mTotalCounts;
+    private ShareActionProvider mShareActionProvider;
 
 
     @Override
@@ -77,6 +79,12 @@ public class CountsListFragment extends ListFragment {
                 public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                     MenuInflater inflater = mode.getMenuInflater();
                     inflater.inflate(R.menu.counts_list_context, menu);
+
+                    // Locate MenuItem with ShareActionProvider
+                    MenuItem item = menu.findItem(R.id.menu_item_share);
+
+                    // Fetch and store ShareActionProvider
+                    mShareActionProvider = (ShareActionProvider) item.getActionProvider();
                     return true;
                 }
 
@@ -87,14 +95,28 @@ public class CountsListFragment extends ListFragment {
 
                 @Override
                 public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    ArrayAdapter<TotalCount> adapter =
+                            (ArrayAdapter<TotalCount>) getListAdapter();
+
+                    TotalCountSingleton totalCountSingleton = TotalCountSingleton.get(getActivity());
                     switch (item.getItemId()) {
                         case R.id.menu_item_delete_count:
-                            ArrayAdapter<TotalCount> adapter =
-                                    (ArrayAdapter<TotalCount>) getListAdapter();
-                            TotalCountSingleton totalCountSingleton = TotalCountSingleton.get(getActivity());
+
+                            //For each item checked, delete from Singleton
                             for (int i = adapter.getCount() - 1; i >=0; i--) {
                                 if (getListView().isItemChecked(i)) {
                                     totalCountSingleton.deleteCount(adapter.getItem(i));
+                                }
+                            }
+                            mode.finish();
+                            adapter.notifyDataSetChanged();
+                            return true;
+
+                        case R.id.menu_item_share:
+                            //For each item checked, delete from Singleton
+                            for (int i = adapter.getCount() - 1; i >=0; i--) {
+                                if (getListView().isItemChecked(i)) {
+                                    //TODO: Create CSV from each item
                                 }
                             }
                             mode.finish();
@@ -134,6 +156,12 @@ public class CountsListFragment extends ListFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         getActivity().getMenuInflater().inflate(R.menu.counts_list_context, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
     }
 
     @Override
@@ -144,11 +172,23 @@ public class CountsListFragment extends ListFragment {
         TotalCount totalCount = adapter.getItem(position);
 
         switch (item.getItemId()){
+            //Delete item selected
             case R.id.menu_item_delete_count:
                 TotalCountSingleton.get(getActivity()).deleteCount(totalCount);
                 adapter.notifyDataSetChanged();
                 return true;
+
+            //Share item selected
+            case R.id.menu_item_share:
+                //TODO: Get all counts selected
         }
         return super.onContextItemSelected(item);
+    }
+
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 }
